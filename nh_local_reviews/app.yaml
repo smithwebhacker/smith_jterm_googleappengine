@@ -20,7 +20,10 @@ handlers:
   static_files: assets/javascript/\1
   upload: assets/javascript/(.*\.js)
 
-# site root
-- url: /
-  static_files: assets/templates/main.html
-  upload: assets/templates/main.html
+# All unhandled request goes to the handler without restrictions.
+- url: .*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
