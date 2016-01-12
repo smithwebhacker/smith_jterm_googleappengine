@@ -65,6 +65,7 @@ class MainPageTest(unittest.TestCase):
 
         """ now test our sort """
         review_likes = self.find_reviews_like_count()
+        """ this is a failing test: self.assertEqual(review_likes, [12,13,14,15,35]) """
         self.assertEqual(review_likes, expected_order)
 
         """ let's do a reverse order sort """
