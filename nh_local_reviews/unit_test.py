@@ -56,11 +56,7 @@ class MainPageTest(unittest.TestCase):
 
     def testSortReviews(self):
         """ how about setting up what we expect our sort order to be """
-        expected_order = []
-        reviews = self.browser.find_elements_by_class_name('review')
-        for review in reviews:
-            like_count = review.find_element_by_class_name('like_count')
-            expected_order.append(int(like_count.text))
+        expected_order = self.find_reviews_like_count()
         expected_order.sort()
 
         """ let's do a sort """
@@ -68,11 +64,7 @@ class MainPageTest(unittest.TestCase):
         btn_sort.click()
 
         """ now test our sort """
-        review_likes = []
-        reviews = self.browser.find_elements_by_class_name('review')
-        for review in reviews:
-            like_count = review.find_element_by_class_name('like_count')
-            review_likes.append(int(like_count.text))
+        review_likes = self.find_reviews_like_count()
         self.assertEqual(review_likes, expected_order)
 
         """ let's do a reverse order sort """
@@ -83,13 +75,16 @@ class MainPageTest(unittest.TestCase):
 
         """ now test our reverse order sort """
         expected_order.reverse()
+        review_likes = self.find_reviews_like_count()
+        self.assertEqual(review_likes, expected_order)
+
+    def find_reviews_like_count(self):
         review_likes = []
         reviews = self.browser.find_elements_by_class_name('review')
         for review in reviews:
             like_count = review.find_element_by_class_name('like_count')
             review_likes.append(int(like_count.text))
-        self.assertEqual(review_likes, expected_order)
-
+        return review_likes
 
 if __name__ == "__main__":
     unittest.main()
