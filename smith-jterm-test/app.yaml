@@ -1,0 +1,36 @@
+application: smith-jterm-test-agente
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /person/(riccardo|sidnie)
+  static_files: \1/file1.html
+  upload: (riccardo|sidnie)/.*
+
+- url: /my_css
+  static_dir: css
+
+- url: /my_js
+  static_dir: js
+
+- url: /search-(en|it|fr)
+  script: search.app
+
+- url: /search-jp
+  script: search.app
+
+- url: /search-.*
+  script: search.app
+
+- url: .*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
