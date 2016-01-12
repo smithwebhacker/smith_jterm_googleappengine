@@ -5,7 +5,7 @@ import unittest
 class MainPageTest(unittest.TestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
-        self.browser.get('http://localhost:8084/')
+        self.browser.get('http://nh-local-reviews-agente.appspot.com/')
 
     def tearDown(self):
         self.browser.close()
@@ -56,9 +56,12 @@ class MainPageTest(unittest.TestCase):
 
     def testSortReviews(self):
         """ how about setting up what we expect our sort order to be """
-        expected_order = [15,15,25,45]
-        reverse_expected_order = list(expected_order)
-        reverse_expected_order.reverse()
+        expected_order = []
+        reviews = self.browser.find_elements_by_class_name('review')
+        for review in reviews:
+            like_count = review.find_element_by_class_name('like_count')
+            expected_order.append(int(like_count.text))
+        expected_order.sort()
 
         """ let's do a sort """
         btn_sort = self.browser.find_element_by_id('btn_sort')
@@ -79,12 +82,13 @@ class MainPageTest(unittest.TestCase):
         btn_sort.click()
 
         """ now test our reverse order sort """
+        expected_order.reverse()
         review_likes = []
         reviews = self.browser.find_elements_by_class_name('review')
         for review in reviews:
             like_count = review.find_element_by_class_name('like_count')
             review_likes.append(int(like_count.text))
-        self.assertEqual(review_likes, reverse_expected_order)
+        self.assertEqual(review_likes, expected_order)
 
 
 if __name__ == "__main__":
